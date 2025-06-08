@@ -45,17 +45,26 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
     const e = {
       username: user.username,
       description,
-      duration,
+      duration: parseInt(duration),
       date: date ? new Date(date) : new Date(),
     };
     user.log.push(e);
     await user.save();
-    return res.status(200).json({
-      _id: user._id,
+    const temp = {
       username: user.username,
       description: e.description,
       duration: e.duration,
       date: e.date.toDateString(),
+      _id: user._id,
+    };
+    console.log(date ? date : "###");
+    console.log(temp);
+    return res.status(200).json({
+      username: user.username,
+      description: e.description,
+      duration: e.duration,
+      date: e.date.toDateString(),
+      _id: user._id,
     });
   } catch (err) {
     return res.status(400).json({ error: err.message });
